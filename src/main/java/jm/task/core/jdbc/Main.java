@@ -11,6 +11,8 @@ public class Main {
     private static final User user3 = new User("name3", "lastname3", (byte) 23);
     private static final User user4 = new User("name4", "lastname4", (byte) 15);
     public static void main(String[] args) {
+        UserService userService = new UserServiceImpl();
+
         userService.createUsersTable();
         userService.saveUser(user1.getName(), user1.getLastName(), user1.getAge());
         userService.saveUser(user2.getName(), user2.getLastName(), user2.getAge());
