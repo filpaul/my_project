@@ -12,26 +12,26 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-
 public class Util {
-    private static Util instance;
-    private static Connection conection;
 
-    private Util() {
-    }
-    public static Util getInstance() {
-        if (instance == null) {
-            instance = new Util();
+        private static Util instance;
+
+        private Util() {
         }
-        return instance;
-    }
 
-    private static final String URL = "jdbc:mysql://localhost:3306/test";
+        public static Util getInstance() {
+            if (instance == null) {
+                instance = new Util();
+            }
+            return instance;
+        }
+    private static final String URL = "jdbc:mysql://localhost:3306/test_db";
     private static final String LOGIN = "root";
     private static final String PASSWORD = "I12m0567";
 
     private static SessionFactory sessionFactory;
-    public static SessionFactory getSessionFactory() {
+
+    public SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
                 Configuration configuration = new Configuration();
@@ -41,10 +41,12 @@ public class Util {
                 settings.put(Environment.URL, URL);
                 settings.put(Environment.USER, LOGIN);
                 settings.put(Environment.PASS, PASSWORD);
-                settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
+                settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
 
                 settings.put(Environment.SHOW_SQL, "true");
+                settings.put(Environment.HBM2DDL_AUTO, "none");
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+
 
                 configuration.setProperties(settings);
 
@@ -61,16 +63,19 @@ public class Util {
         return sessionFactory;
     }
 
-    public Connection getConnection() {
+
+//    private static Connection conection = null;
+
+    public static Connection getConnection() {
         Connection connection = null;
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return conection;
+        return connection;
     }
 }
